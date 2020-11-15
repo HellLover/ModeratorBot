@@ -17,17 +17,18 @@ module.exports = class extends Event {
     }
 
     async execute(member) {
+       if(member.guild.id !== "715290558779883532") return;
 
-        this.client.channels.cache.get("715306380357009558").send(`:flag_gb: | Welcome to Dolphin's support server, ${member.user}!\n:flag_ru: | Добро пожаловать на сервер поддержки бота Dolphin, ${member.user}!`)
+        this.client.channels.cache.get("715306380357009558").send(`:flag_gb: | Welcome to Dolphin's support server, ${member.user}!\n\n:flag_ru: | Добро пожаловать на сервер поддержки бота Dolphin, ${member.user}!`)
 
-        let role = this.client.roles.cache.get("715298416199991346")
+        let role = member.guild.roles.cache.get("715298416199991346")
 
         await member.roles.add(role.id)
 
         if(member.guild.id !== stats.serverID) return;
-      client.channels.cache.get(stats.total).setName(`Member Count: ${member.guild.memberCount}`);
-      client.channels.cache.get(stats.channels).setName(`Channels: ${member.guild.channels.cache.size}`);
-      client.channels.cache.get(stats.roles).setName(`Roles: ${member.guild.roles.cache.size}`);
+      this.client.channels.cache.get(stats.total).setName(`Member Count: ${member.guild.memberCount}`);
+      this.client.channels.cache.get(stats.channels).setName(`Channels: ${member.guild.channels.cache.size}`);
+      this.client.channels.cache.get(stats.roles).setName(`Roles: ${member.guild.roles.cache.size}`);
 
     }
 };
