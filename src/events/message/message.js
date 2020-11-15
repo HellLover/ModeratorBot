@@ -18,8 +18,8 @@ module.exports = class extends Event {
 
         let substringArray = get_substrings_between(message.content, ":", ":")
         let msg = message.content;
-        if(!substringArray.length) return;
 
+      if(substringArray) {
         substringArray.forEach(m => {
           let emoji = this.client.emojis.cache.find(x => x.name === m)
           var replace = `:${m}:`;
@@ -52,6 +52,8 @@ module.exports = class extends Event {
           name: 'DolphinEmojis',
           avatar: this.client.user.displayAvatarURL({ dynamic: false })
         })
+          
+      }
 
         const [commandName, ...args] = message.content.slice(this.client.prefix.length).trim().split(/ +/g);
 
