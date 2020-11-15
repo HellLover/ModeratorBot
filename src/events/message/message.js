@@ -2,6 +2,8 @@ require('dotenv/config');
 const Event = require('../../listeners/bases/eventBase');
 const { Collection } = require('discord.js');
 
+const { getGuildById } = require("../../utils/functions")
+
 module.exports = class extends Event {
 
     constructor(...args) {
@@ -20,6 +22,8 @@ module.exports = class extends Event {
         const command = this.client.commands.get(commandName)
             || this.client.commands.get(this.client.aliases.get(commandName));
 
+       const guildId = message.guild.id;
+       const guild = await getGuildById(guildId);
        const customCmds = guild.custom_commands;
 
         if (customCmds) {
