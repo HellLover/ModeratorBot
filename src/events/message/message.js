@@ -13,47 +13,9 @@ module.exports = class extends Event {
     }
 
     async execute(message) {
+        if(!message.content.startsWith(this.client.prefix)) return;
         if(message.author.bot) return;
         if(message.channel.type === 'dm') return;
-
-        let substringArray = get_substrings_between(message.content, ":", ":")
-        let msg = message.content;
-
-      if(substringArray) {
-        substringArray.forEach(m => {
-          let emoji = this.client.emojis.cache.find(x => x.name === m)
-          var replace = `:${m}:`;
-          var rexreplace = new RegExp(replace, 'g');
-
-          if(emoji && !msg.split(" ").find(x => x === emoji.toString()) && !msg.includes(`<a${replace}${emoji.id}>`)) msg = msg.replace(rexreplace, emoji.toString());
-        })
-
-        if(msg === message.content) return;
-
-        let webhook = await message.channel.fetchWebhooks();
-        webhook = webhook.find(x => x.name === "DolphinEmojis");
-
-        if(!webhook) {
-          webhook = await message.channel.createWebhook('DolphinEmojis', {
-            avatar: this.client.user.displayAvatarURL({ dynamic: false })
-          });
-        }
-
-        await webhook.edit({
-          name: message.member.nickname ? message.member.nickname : message.author.username,
-          avatar: message.author.displayAvatarURL({ dynamic: true })
-        })
-
-        message.delete().catch(m => {})
-
-        webhook.send(msg).catch(m => {});
-
-        await webhook.edit({
-          name: 'DolphinEmojis',
-          avatar: this.client.user.displayAvatarURL({ dynamic: false })
-        })
-          
-      }
 
         const [commandName, ...args] = message.content.slice(this.client.prefix.length).trim().split(/ +/g);
 
