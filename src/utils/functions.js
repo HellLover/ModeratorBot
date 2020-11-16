@@ -151,7 +151,7 @@ async function removeUserWarnings(userId, guildId) {
  * @param {Object} message
  */
 
-function findMember(message, args, allowAuthor) {
+function getMember(message, args, allowAuthor) {
   return message.guild.member(
     message.mentions.users.first() ||
       message.guild.members.cache.get(args[0]) ||
@@ -171,5 +171,5 @@ module.exports = {
   removeGuild,
   addWarning,
   removeUserWarnings,
-  findMember,
+  getMember,
 };
