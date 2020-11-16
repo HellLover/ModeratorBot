@@ -2,7 +2,10 @@ require('dotenv/config');
 const Event = require('../../listeners/bases/eventBase');
 const { Collection } = require('discord.js');
 
-const { getGuildById } = require("../../utils/functions")
+const { getGuildById, updateUserById } = require("../../utils/functions");
+
+const Levels = require("discord-xp");
+Levels.setURL(process.env.MONGO_URI);
 
 module.exports = class extends Event {
 
@@ -16,6 +19,7 @@ module.exports = class extends Event {
         if(!message.content.startsWith(this.client.prefix)) return;
         if(message.author.bot) return;
         if(message.channel.type === 'dm') return;
+        xp(message);
 
         const [commandName, ...args] = message.content.slice(this.client.prefix.length).trim().split(/ +/g);
 
@@ -82,26 +86,19 @@ module.exports = class extends Event {
     }
 };
 
-    function get_substrings_between(str, startDelimiter, endDelimiter) {
-      var contents = [];
-      var startDelimiterLength = startDelimiter.length;
-      var endDelimiterLength = endDelimiter.length;
-      var startFrom = contentStart = contentEnd = 0;
+  async function xp(message) {
+      if(message.author.bot) return;
 
-      while(false !== (contentStart = strpos(str, startDelimiter, startFrom))) {
-        contentStart += startDelimiterLength;
-        contentEnd = strpos(str, endDelimiter, contentStart);
-        if(false === contentEnd) {
-          break;
-        }
-        contents.push(str.substr(contentStart, contentEnd - contentStart));
-        startFrom = contentEnd + endDelimiterLength;
-      }
+        const randomXp = Math.floor(Math.random() * 29) + 1; // Min 1, Max 30
+        const hasLeveledUp = await Levels.appendXp(message.author.id, message.guild.id, randomXp);
 
-      return contents;
+    if(hasLeveledUp) {
+        const user = await Levels.fetch(message.author.id, message.guild.id);
+        message.channel.send(`\`${message.author.tag}\` has just leveled up to level **${user.level}** :tada:`);
+
+        const levelRole = message.guild.roles.cache.find(role => role.name === `Level ${user.level}`);
+        if(!levelRole) return;
+
+        message.guild.member(user).roles.add(levelRole);
     }
-
-    function strpos(haystack, needle, offset) {
-      var i = (haystack + '').indexOf(needle, (offset || 0));
-      return i === -1 ? false : i;
-    }
+}
