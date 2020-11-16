@@ -99,6 +99,7 @@ module.exports = class extends Event {
         const levelRole = message.guild.roles.cache.find(role => role.name === `Level ${user.level}`);
         if(!levelRole) return;
 
+        if(message.member.roles.cache.has(levelRole.id)) return;
         message.member.roles.add(levelRole.id);
     }
 }
