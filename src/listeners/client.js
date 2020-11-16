@@ -2,6 +2,7 @@ require('dotenv/config');
 const { Client, Collection } = require('discord.js');
 const { eventRegistry, commandRegistry } = require('../registries/export/index');
 const Util = require('./util');
+const { getMember } = require("../utils/functions")
 
 module.exports = class DiscordClient extends Client {
 
@@ -16,7 +17,7 @@ module.exports = class DiscordClient extends Client {
         this.cooldowns = new Collection();
         this.util = new Util(this);
         this.prefix = process.env.PREFIX;
-        this.afk = new Map();
+        this.getMember = getMember;
     }
 
     async start() {
