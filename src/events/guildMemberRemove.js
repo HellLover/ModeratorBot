@@ -19,11 +19,11 @@ module.exports = class extends Event {
     async execute(member) {
        if(member.guild.id !== "715290558779883532") return;
 
-      this.client.channels.cache.get("715496816241672213").send(`:flag_gb: | **${member.user.tag}** has left the server!\n\n:flag_ru: | **${member.user.tag}** покинул сервер!`)
+      member.guild.channels.cache.get("715496816241672213").send(`:flag_gb: | **${member.user.tag}** has left the server!\n\n:flag_ru: | **${member.user.tag}** покинул сервер!`)
 
         if(member.guild.id !== stats.serverID) return;
-      this.client.channels.cache.get(stats.total).setName(`Member Count: ${member.guild.memberCount}`);
-      this.client.channels.cache.get(stats.channels).setName(`Channels: ${member.guild.channels.cache.size}`);
-      this.client.channels.cache.get(stats.roles).setName(`Roles: ${member.guild.roles.cache.size}`);
+      member.guild.channels.cache.get(stats.total).setName(`Member Count: ${member.guild.memberCount}`);
+      member.guild.channels.cache.get(stats.channels).setName(`Channels: ${member.guild.channels.cache.size}`);
+      member.guild.channels.cache.get(stats.roles).setName(`Roles: ${member.guild.roles.cache.size}`);
     }
 };
