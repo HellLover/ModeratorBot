@@ -88,6 +88,7 @@ module.exports = class extends Event {
 
   async function xp(message) {
       if(message.author.bot) return;
+      if(message.content.startsWith(process.env.PREFIX)) return;
 
         const randomXp = Math.floor(Math.random() * 29) + 1; // Min 1, Max 30
         const hasLeveledUp = await Levels.appendXp(message.author.id, message.guild.id, randomXp);
